@@ -36,30 +36,18 @@ class MainActivity : AppCompatActivity() {
             {
                 val button = Button(this)
                 button.setText("$i $j")
-                //button.left = i * 10 + j * 10
                 tableRow.addView(button)
             }
             tableLayout.addView(tableRow)
         }
         setContentView(tableLayout)
 
-        //Log.d("my_tag1", jsonString)
         val foos = Response(jsonString)
         foos.data?.forEach { i -> Log.d("my_tag", "name: " + i.name + ", symbol: " + i.symbol + ", price: " + i.current_price + ", price change 24h: " + i.price_change_percentage_24h + "%, last updated: " + i.last_updated)
         }
-
-//        tabLayout = findViewById(R.id.tabLayout)
-//        //title = "KotlinApp"
-//        tabLayout = findViewById(R.id.tabLayout)
-//        tabLayout.addTab(tabLayout.newTab().setText("Football"))
-//        tabLayout.addTab(tabLayout.newTab().setText("Cricket"))
-//        tabLayout.addTab(tabLayout.newTab().setText("NBA"))
-//        tabLayout.addTab(tabLayout.newTab().setText("yo"))
-        //tabLayout.tabGravity = TabLayout.GRAVITY_FILL
     }
 
     class Response(json: String) : JSONObject(json) {
-        //val type: String? = this.optString("type")
         val data = this.optJSONArray("all_data")
             ?.let { 0.until(it.length()).map { i -> it.optJSONObject(i) } } // returns an array of JSONObject
             ?.map { Foo(it.toString()) } // transforms each JSONObject of the array into Foo
