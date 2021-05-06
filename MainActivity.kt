@@ -9,9 +9,8 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    var netData: String? = null
-    lateinit var jsonString: String
-    lateinit var tableLayout: TableLayout
+    private var cryptoData: List<Foo>? = null
+    private lateinit var tableLayout: TableLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,8 +24,9 @@ class MainActivity : AppCompatActivity() {
     {
         val thread = Thread {
             try {
-                netData = URL("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true").readText()
-                jsonString = "{\"all_data\":" + netData + "}"
+                val netData = URL("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true").readText()
+                val jsonString = "{\"all_data\":$netData}"
+                cryptoData = Response(jsonString).data
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -38,26 +38,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun createTable()
     {
-        val crptoData = Response(jsonString).data
-//        foos.data?.forEach {
-//                i -> Log.d("my_tag", "name: " + i.name + ", symbol: " + i.symbol + ", price: " + i.current_price
-//                + ", price change 24h: " + i.price_change_percentage_24h + "%, last updated: " + i.last_updated)
-//                for (j in 0..(i.sparkline_in_7d?.length()?.minus(1) ?: -1))
-//                {
-//                    Log.d("my_tag", (i.sparkline_in_7d?.get(j)?.toString() ?: "null") + " ")
-//                }
-//        }
         tableLayout = TableLayout(this)
-        if (crptoData != null) {
-            for (currentCrypto in crptoData)
-            {
-                val tableRow = TableRow(this)
-                val button = Button(this)
-                button.text = currentCrypto.name
-                button.width = 1050
-                tableRow.addView(button)
-                tableLayout.addView(tableRow)
-            }
+        for (currentCrypto in cryptoData!!)
+        {
+            val tableRow = TableRow(this)
+            val button = Button(this)
+            button.text = currentCrypto.name
+            button.width = 1050
+            tableRow.addView(button)
+            tableLayout.addView(tableRow)
         }
     }
 
