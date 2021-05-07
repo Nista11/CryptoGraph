@@ -1,5 +1,7 @@
 package com.goth.cryptograph
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -51,21 +53,23 @@ class MainActivity : AppCompatActivity() {
         {
             val tableRow = TableRow(this)
             val button = Button(this)
-            if (currentCrypto.price_change_percentage_24h > 0)
+            if (currentCrypto.priceChangePercentage24h > 0)
                 button.setTextColor(Color.rgb(0, 200, 0))
             else
                 button.setTextColor(Color.rgb(200, 0, 0))
 
             var text = "${currentCrypto.name} (${currentCrypto.symbol}) ${currentCrypto.price} \$"
-            if (currentCrypto.price_change_percentage_24h > 0)
-                text += " +"
-            else
-                text += " "
-            text += "${currentCrypto.price_change_percentage_24h}%"
+            text += if (currentCrypto.priceChangePercentage24h > 0) " +" else " "
+            text += "${(currentCrypto.priceChangePercentage24h * 100).toInt().toDouble() / 100}%"
             button.text = text
 
             button.width = getScreenWidth()
             button.height = getScreenHeight() / 6
+
+            button.setOnClickListener{
+                startActivity(Intent(this, CryptoDetailActivity::class.java).putExtra("cryptoName", currentCrypto.name))
+            }
+
             tableRow.addView(button)
             tableLayout.addView(tableRow)
         }
@@ -80,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(relativeLayout)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun connectionErrorMessage()
     {
         val textView = TextView(this)
@@ -89,11 +94,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(relativeLayout)
     }
 
-    fun getScreenWidth(): Int {
+    private fun getScreenWidth(): Int {
         return Resources.getSystem().displayMetrics.widthPixels
     }
 
-    fun getScreenHeight(): Int {
+    private fun getScreenHeight(): Int {
         return Resources.getSystem().displayMetrics.heightPixels
     }
 
@@ -107,8 +112,8 @@ class MainActivity : AppCompatActivity() {
         val name: String? = this.optString("name")
         val symbol: String? = this.optString("symbol")
         val price = this.optDouble("current_price")
-        val price_change_percentage_24h = this.optDouble("price_change_percentage_24h")
-        val last_updated = this.optString("last_updated")
-        val sparkline_in_7d = this.optJSONObject("sparkline_in_7d")?.getJSONArray("price")
+        val priceChangePercentage24h = this.optDouble("price_change_percentage_24h")
+        val lastUpdated: String? = this.optString("last_updated")
+        val sparklineIn7d = this.optJSONObject("sparkline_in_7d")?.getJSONArray("price")
     }
 }
