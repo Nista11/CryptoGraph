@@ -3,15 +3,20 @@ package com.goth.cryptograph
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 
 class CryptoDetailActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +57,16 @@ class CryptoDetailActivity : AppCompatActivity() {
             }
 
             if (i == 2)
+                button.setTextColor(if (priceChangePercentage24h > 0) Color.rgb(0, 160, 0) else Color.rgb(200, 0, 0))
+
+            if (i == 5)
             {
-                if (priceChangePercentage24h > 0)
-                    button.setTextColor(Color.rgb(0, 160, 0))
-                else
-                    button.setTextColor(Color.rgb(200, 0, 0))
+//                val paint = Paint()
+//                paint.color = if (priceChangePercentage24h > 0) Color.rgb(0, 160, 0) else Color.rgb(200, 0, 0)
+//
+//                val canvas = Canvas()
+//                canvas.drawLine(0f, 0f, 100f, 100f, paint)
+//                relativeLayout.onDrawForeground(canvas)
             }
 
             button.width = getScreenWidth()
