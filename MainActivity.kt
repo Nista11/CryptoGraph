@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val tableRow = TableRow(this)
             val button = Button(this)
             if (currentCrypto.priceChangePercentage24h > 0)
-                button.setTextColor(Color.rgb(0, 200, 0))
+                button.setTextColor(Color.rgb(0, 160, 0))
             else
                 button.setTextColor(Color.rgb(200, 0, 0))
 
@@ -67,7 +67,14 @@ class MainActivity : AppCompatActivity() {
             button.height = getScreenHeight() / 6
 
             button.setOnClickListener{
-                startActivity(Intent(this, CryptoDetailActivity::class.java).putExtra("cryptoName", currentCrypto.name))
+                startActivity(Intent(this, CryptoDetailActivity::class.java)
+                    .putExtra("name", currentCrypto.name)
+                    .putExtra("symbol", currentCrypto.symbol)
+                    .putExtra("price", currentCrypto.price.toString())
+                    .putExtra("priceChangePercentage24h",currentCrypto.priceChangePercentage24h.toString())
+                    .putExtra("lastUpdated", currentCrypto.lastUpdated)
+                    .putExtra("sparklineIn7d", currentCrypto.sparklineIn7d.toString())
+                )
             }
 
             tableRow.addView(button)
