@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         val scrollView = ScrollView(this)
         scrollView.addView(tableLayout)
         relativeLayout.addView(scrollView)
-        setContentView(relativeLayout)
     }
 
     @SuppressLint("SetTextI18n")
@@ -98,7 +97,6 @@ class MainActivity : AppCompatActivity() {
         textView.text = "Unable to connect to services. Please check your connection and try again."
         val relativeLayout: RelativeLayout = findViewById(R.id.relative_layout)
         relativeLayout.addView(textView)
-        setContentView(relativeLayout)
     }
 
     private fun getScreenWidth(): Int {
