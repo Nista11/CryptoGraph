@@ -25,6 +25,7 @@ class CryptoDetailActivity : AppCompatActivity() {
 
         val backButton = Button(this)
         backButton.text = "<- Go back"
+        backButton.textSize = min(getScreenHeight(), getScreenWidth()) / 90f
         backButton.width = getScreenWidth()
         backButton.height = getScreenHeight() / 8
         backButton.setOnClickListener{
